@@ -1,16 +1,22 @@
-import React, { useState} from "react";
+import React, { useState, useContext} from "react";
 import "@styles/header.scss";
 import Menu from "@components/Menu";
-
+import AppContext from "@context/AppContext";
 import icono_menu from '@icons/icon_menu.svg'
 import icon_shopping_cart from '@icons/icon_shopping_cart.svg'
+import MyOrder from "@containers/MyOrder";
 import logo from '@logos/logo_yard_sale.svg'
 
 const Header = () => {
   const [menu, setMenu] = useState(false);
+  const [menuOrders, setMenuOrders] = useState(false);
+  const { state } = useContext(AppContext);
 
   const handleMenu = () => {
     setMenu(!menu);
+  };
+  const handleMenuOrders = () => {
+    setMenuOrders(!menuOrders);
   };
 
   return (
@@ -42,13 +48,14 @@ const Header = () => {
       <div className="navbar-right">
         <ul>
           <li className="navbar-email" onClick={handleMenu}>platzi@example.com</li>
-          <li className="navbar-shopping-cart">
+          <li className="navbar-shopping-cart" onClick={handleMenuOrders}>
             <img src={icon_shopping_cart} alt="shopping cart" />
-            <div>2</div>
+            {state.cart.length > 0 ? <div>{state.cart.length}</div> : null}
           </li>
         </ul>
       </div>
       {menu ? <Menu /> : null } 
+      {menuOrders ? <MyOrder /> : null}
     </nav>
   );
 };
